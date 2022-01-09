@@ -7,10 +7,12 @@ function countAnimals(animal) {
       return accumulator;
     }, {});
   }
-
-  return animal;
+  if (animal.specie) {
+    return species.filter((specie) => specie.name === animal.specie)[0]
+      .residents.length;
+  }
 }
 
-console.log(countAnimals());
+console.log(countAnimals({ specie: 'penguins' }));
 
 module.exports = countAnimals;
