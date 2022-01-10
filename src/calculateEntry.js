@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 const data = require('../data/zoo_data');
 
 function countEntrants(entrants) {
@@ -11,9 +10,7 @@ function countEntrants(entrants) {
       if (currentPerson.age >= 18 && currentPerson.age < 50) {
         accumulator.adult += 1;
       }
-      if (currentPerson.age >= 50) {
-        accumulator.senior += 1;
-      }
+      if (currentPerson.age >= 50) accumulator.senior += 1;
       return accumulator;
     },
     {
@@ -26,6 +23,12 @@ function countEntrants(entrants) {
 
 function calculateEntry(entrants) {
   if (!entrants || Object.keys(entrants).length === 0) return 0;
+  const quantiryOfPeople = countEntrants(entrants);
+  const { prices } = data;
+  const childPrice = quantiryOfPeople.child * prices.child;
+  const adultPrice = quantiryOfPeople.adult * prices.adult;
+  const seniorPrice = quantiryOfPeople.senior * prices.senior;
+  return childPrice + adultPrice + seniorPrice;
 }
 
 module.exports = { calculateEntry, countEntrants };
