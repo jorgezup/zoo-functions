@@ -1,7 +1,3 @@
-/* eslint-disable complexity */
-/* eslint-disable max-lines-per-function */
-/* eslint-disable no-confusing-arrow */
-/* eslint-disable editorconfig/editorconfig */
 const { species, hours } = require('../data/zoo_data');
 
 function getOfficeHoursWithoutTarget(officeHours, speciesDaysAvailable) {
@@ -24,9 +20,13 @@ function getOfficeHoursWithoutTarget(officeHours, speciesDaysAvailable) {
 }
 
 function getOfficeHoursSpecificDay(officeHours, speciesDaysAvailable, param) {
+  if (param === 'Monday') {
+    return {
+      Monday: { officeHour: 'CLOSED', exhibition: 'The zoo will be closed!' },
+    };
+  }
   const filtered = officeHours.find(([day]) => day === param);
   const [day, openCloseHours] = filtered;
-
   return {
     [day]: {
       officeHour: `Open from ${openCloseHours.open}am until ${openCloseHours.close}pm`,
@@ -51,7 +51,7 @@ const arraySpecieDaysAvialable = species.map((specie) => [
   specie.availability,
 ]);
 
-const isDay = (param) => Object.entries(hours).some((day) => day[0] === param);
+const isDay = (param) => arrayOfOfficeHours.some((day) => day[0] === param);
 const isAnimal = (param) => species.find((specie) => specie.name === param);
 
 function getSchedule(scheduleTarget) {
@@ -59,20 +59,12 @@ function getSchedule(scheduleTarget) {
     arrayOfOfficeHours,
     arraySpecieDaysAvialable,
   );
-
   const targetIsCorrect = getAnimalsAndDays().find(
     (item) => item === scheduleTarget,
   );
-
   if (!scheduleTarget || !targetIsCorrect) {
     return withoutTarget.reduce((acc, curr) => ({ ...acc, ...curr }));
   }
-  if (scheduleTarget === 'Monday') {
-    return {
-      Monday: { officeHour: 'CLOSED', exhibition: 'The zoo will be closed!' },
-    };
-  }
-  if (isAnimal(scheduleTarget)) return isAnimal(scheduleTarget).availability;
   if (isDay(scheduleTarget)) {
     return getOfficeHoursSpecificDay(
       arrayOfOfficeHours,
@@ -80,14 +72,7 @@ function getSchedule(scheduleTarget) {
       scheduleTarget,
     );
   }
-  // const specieAvailability = species.find(
-  //   (item) => item.name === scheduleTarget,
-  // ).availability;
-  // if (specieAvailability) return specieAvailability;
-  // console.dir('asdas', Object.keys(withoutTarget), { depth: 4 });
-  // return daysOfficeHours;
+  return isAnimal(scheduleTarget).availability;
 }
-
-console.log(getSchedule('Monday'));
 
 module.exports = getSchedule;
