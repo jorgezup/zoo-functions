@@ -11,10 +11,9 @@ function getOfficeHoursWithoutTarget(officeHours, speciesDaysAvailable) {
         day === 'Monday'
           ? 'The zoo will be closed!'
           : speciesDaysAvailable
-              .map(([animal, arrayOfDayEachAnimal]) =>
-                arrayOfDayEachAnimal.includes(day) ? animal : false,
-              )
-              .filter((item) => item !== false),
+            .map(([animal, arrayOfDayEachAnimal]) =>
+              (arrayOfDayEachAnimal.includes(day) ? animal : false))
+            .filter((item) => item !== false),
     },
   }));
 }
@@ -32,8 +31,7 @@ function getOfficeHoursSpecificDay(officeHours, speciesDaysAvailable, param) {
       officeHour: `Open from ${openCloseHours.open}am until ${openCloseHours.close}pm`,
       exhibition: speciesDaysAvailable
         .map(([animal, arrayOfDayEachAnimal]) =>
-          arrayOfDayEachAnimal.includes(day) ? animal : false,
-        )
+          (arrayOfDayEachAnimal.includes(day) ? animal : false))
         .filter((item) => item !== false),
     },
   };
